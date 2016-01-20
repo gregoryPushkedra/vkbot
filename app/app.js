@@ -57,6 +57,9 @@ class App {
       authData: {
         login: params.login, 
         pass: params.pass
+      }, 
+      captcha: {
+        antiCaptchaKey: params.antiCaptchaKey
       }
     };
 
