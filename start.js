@@ -5,8 +5,8 @@ let parsers = require('./app/parsers');
 
 let params = {
   appId: ID, 
-  login: LOGIN, 
-  pass: PASS, 
+  login: PASS, 
+  pass: LOGIN, 
   antiCaptchaKey: KEY
 }
 

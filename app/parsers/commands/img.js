@@ -30,7 +30,7 @@ module.exports = (arg, callback) => {
 
     return res;
   })
-  .then(parsers.parseGoogleImgUrl)
+  .then(res => parsers.parseGoogleImgUrl(res))
   .then(imgurl => {
     return (function download () {
       return prequest(imgurl(), { encoding: null }).catch(e => {
