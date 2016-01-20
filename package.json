@@ -1,0 +1,23 @@
+{
+  "name": "vkbot",
+  "version": "0.3.0",
+  "description": "Vkontakte chat-bot",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/olnaz/vkbot.git"
+  },
+  "main": "start.js",
+  "scripts": {
+    "start": "node start.js"
+  },
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "node-vkapi": "^1.1.6",
+    "request-promise": "^1.0.2"
+  },
+  "engines": {
+    "node": ">=5.0.0"
+  },
+  "author": "olnaz",
+  "license": "ISC"
+}
