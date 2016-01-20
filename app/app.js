@@ -59,7 +59,7 @@ class App {
         pass: params.pass
       }, 
       captcha: {
-        antiCaptchaKey: params.antiCaptchaKey
+        antiCaptchaKey: params.antiCaptchaKey || null
       }
     };
 
