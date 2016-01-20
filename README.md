@@ -41,4 +41,4 @@
 
 ### Запуск
     $ npm start
-    $ npm start-d // debug-режим
+    $ DEBUG=true npm start // debug-режим
