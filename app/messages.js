@@ -91,6 +91,12 @@ class Messages {
     }
   }
 
+  __checkPmFlags (flag) {
+    let flags = [33, 49, 545, 561];
+
+    return !!~flags.indexOf(flag);
+  }
+
   __processUpdates (updates, callback) {
     debug('= Processing updates');
 
@@ -106,7 +112,7 @@ class Messages {
         this.__updateChatComp(parseInt(value[1]));
 
       // checking all incoming messages except messages from Bot
-      if (value[0] === 4 && ((value[7].from && parseInt(value[7].from) !== this.__botId) || (fromId !== this.__botId && (value[2] === 49 || value[2] === 561)))) {
+      if (value[0] === 4 && ((value[7].from && parseInt(value[7].from) !== this.__botId) || this.__checkPmFlags(value[2]))) {
         let message = value[6];
         let messageId = value[1];
         let attachments = value[7];
