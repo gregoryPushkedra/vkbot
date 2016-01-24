@@ -11,14 +11,14 @@ module.exports = (arg, callback) => {
   let chatUsers = argObj.chatUsers;
 
   // беседа переполнена
-  if (chatUsers.length === 50) 
+  if (chatUsers && chatUsers.length === 50) 
     return callback(null);
 
   return VK.call('friends.get', {
     order: 'random', 
     count: 100
   }).then(res => {
-    let friends = res.items.filter(v => !~Object.keys(chatUsers).indexOf(v));
+    let friends = res.items.filter(v => !~Object.keys(chatUsers).indexOf(v.toString()));
 
     if (friends.length === 0) 
       return callback(null);
