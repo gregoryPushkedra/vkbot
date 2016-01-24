@@ -12,6 +12,7 @@
 
 ### Установка
     $ git clone git://github.com/olnaz/vkbot.git && cd vkbot && npm install
+    $ sudo npm install pm2 -g
 
 
 Также для работы модуля `node-ffprobe` придется установить `ffmpeg`  
@@ -41,8 +42,13 @@
 
 
 ### Запуск
-    $ npm start
-    $ DEBUG=true npm start // debug-режим
+    $ sudo pm2 start start.js --node-args="--nouse-idle-notification --expose-gc" --name vkbot
+    $ sudo pm2 start start.js --node-args="--nouse-idle-notification --expose-gc" --name vkbot -- -debug && sudo pm2 logs vkbot // debug-режим
+
+### Мониторинг процесса
+    $ sudo pm2 monit
+
+Документация к PM2: [github.com/Unitech/pm2](https://github.com/Unitech/pm2)
     
 
 После первого старта полученный токен будет сохранен в файл **./token.json** и при последующих запусках будет браться оттуда.
