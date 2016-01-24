@@ -12,18 +12,6 @@ module.exports = {
     return obj;
   }, 
 
-  // Преобразует объект пользователей беседы {id: name} в массив [id1, id2, idN]
-  chatUsersToArrayOfIds (obj) {
-    let chatUsersArray = [];
-
-    for (let key in obj) {
-      if (obj.hasOwnProperty(key)) 
-        chatUsersArray.push(key);
-    }
-
-    return chatUsersArray;
-  }, 
-
   // Возвращает случайный элемент из массива
   randomElem (elemsArray) {
     return elemsArray[Math.floor(Math.random() * elemsArray.length)];
