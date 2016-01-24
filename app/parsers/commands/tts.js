@@ -16,8 +16,8 @@ module.exports = (arg, callback) => {
   if (argText === null) 
     return callback(null);
 
-  // Убираем озвучку перевода на новую строку
-  argText = argText.replace(/<br>/g, ',');
+  // Убираем озвучку перевода на новую строку и обрезаем текст
+  argText = argText.replace(/<br>/g, ',').substr(0, 1500);
 
   let reqUrl = 'https://tts.voicetech.yandex.net/tts?text='+ encodeURIComponent(argText) +'&lang=ru_RU&format=mp3&quality=hi&platform=web&application=translate';
   let fileName = pathConfig['tts'] + 'tts_' + Date.now() + '.mp3';
