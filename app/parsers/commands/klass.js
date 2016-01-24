@@ -9,7 +9,7 @@ const pathConfig = require('../../config/commands/config').path;
  * Ищет и возвращает мемчик с сайта stavklass.ru по запросу
  */
 module.exports = (arg, callback) => {
-  let argText = arg.fullText();
+  let argText = arg.fullText() || 'random';
   let VK = arg.wholeObj()._vkapi;
 
   let reqUrl = 'http://stavklass.ru/images/search?image[text]=' + encodeURIComponent(argText);
@@ -36,9 +36,7 @@ module.exports = (arg, callback) => {
         })
         .catch(err => {
           if (err !== undefined && err.statusCode == '500') {
-            return callback({
-              message: 'По запросу <<' + argText + '>> ничего не найдено.'
-            });
+            return callback('По запросу <<' + argText + '>> ничего не найдено.');
           }
         });
 }

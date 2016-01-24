@@ -8,6 +8,9 @@ const searchConfig = require('../../config/commands/config').search;
 module.exports = (type, callback, VK, q, count) => {
   let typeObj = searchConfig[type];
 
+  if (!q) 
+    return callback(null);
+
   count = parseInt(count || 1);
   count = count <= typeObj.max ? count : typeObj.max;
 
@@ -17,9 +20,7 @@ module.exports = (type, callback, VK, q, count) => {
     let attachItems = [];
 
     if (res.count == 0 || res.items.length === 0) 
-      return callback({
-        message: typeObj.text + ' по запросу <<' + q + '>> не найдены.'
-      });
+      return callback(typeObj.text + ' по запросу <<' + q + '>> не найдены.');
 
     res.items.forEach(itemObj => attachItems.push(typeObj.attach + itemObj.owner_id + '_' + itemObj.id));
 

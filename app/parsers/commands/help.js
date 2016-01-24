@@ -11,23 +11,13 @@ function availabeCommands (cmdL) {
  * Вывод помощи по использованию бота
  */
 module.exports = (arg, callback) => {
-  let _cmdList;
-  let cmd;
-
-  if (Array.isArray(arg)) {
-    cmd = arg[0];
-    _cmdList = arg[1];
-  } else {
-    cmd = arg.firstWord();
-    _cmdList = cmdList(arg.wholeObj().isMultichat);
-  }
+  let _cmdList = cmdList(arg.wholeObj().isMultichat);
+  let cmd = arg.firstWord() || 'help';
 
   if (!~_cmdList.indexOf(cmd)) 
     return callback(null);
 
   let helpText = cmd === 'help' ? lang['help'][0](availabeCommands(_cmdList)) : ('▶ /' + (cmd + ' ' + lang[cmd][1]) + '\n\n' + lang[cmd][0]);
 
-  return callback({
-    message: helpText
-  });
+  return callback(helpText);
 }

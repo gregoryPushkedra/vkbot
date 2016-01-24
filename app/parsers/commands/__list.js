@@ -5,7 +5,7 @@ const path = require('path');
 
 function cmdList (isMchat) {
   let onlyForMultichat = ['goaway', 'who', 'invite']; // только для бесед
-  let onlyForPersonal = ['create']; // только для ЛС
+  let onlyForPersonal = ['create', 'addme']; // только для ЛС
 
   return fs.readdirSync(__dirname)
     .filter(v => v.endsWith('.js') && !v.startsWith('__'))

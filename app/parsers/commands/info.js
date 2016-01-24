@@ -4,7 +4,5 @@
  * Определяет вероятность события
  */
 module.exports = (arg, callback) => {
-  return callback({
-    message: 'Вероятность -- ' + Math.floor(Math.random() * 101) + '%'
-  });
+  return callback('Вероятность -- ' + Math.floor(Math.random() * 101) + '%');
 }

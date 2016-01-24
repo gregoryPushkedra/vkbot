@@ -13,6 +13,9 @@ module.exports = (arg, callback) => {
   let argText = arg.fullText();
   let VK = arg.wholeObj()._vkapi;
 
+  if (argText === null) 
+    return callback(null);
+
   // Убираем озвучку перевода на новую строку
   argText = argText.replace(/<br>/g, ',');
 

@@ -13,6 +13,9 @@ module.exports = (arg, callback) => {
   let argText = arg.fullText();
   let VK = arg.wholeObj()._vkapi;
 
+  if (argText === null) 
+    return callback(null);
+
   let reqUrl = 'https://google.ru/search?newwindow=1&site=imghp&tbm=isch&source=hp&q=' + encodeURIComponent(argText);
   let fileName = pathConfig['img'] + 'img_' + Date.now() + '.jpg';
 
@@ -24,9 +27,7 @@ module.exports = (arg, callback) => {
   })
   .then(res => {
     if (!parsers.checkGoogleImgForExist(res)) 
-      throw callback({
-        message: 'Не найдено изображений по запросу <<' + argText + '>>'
-      });
+      throw callback('Не найдено изображений по запросу <<' + argText + '>>');
 
     return res;
   })

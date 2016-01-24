@@ -12,6 +12,9 @@ module.exports = (arg, callback) => {
   let argPhoto = arg.attachment('photo');
   let VK = arg.wholeObj()._vkapi;
 
+  if (argPhoto === null) 
+    return callback(null);
+
   let howHotUrl = 'https://howhot.io/main.php';
   let fileName = pathConfig['howhot'] + 'howhot_' + Date.now() + '.jpg';
 
@@ -31,11 +34,9 @@ module.exports = (arg, callback) => {
         let gender = { 'Female': '👩 Женщина', 'Male': '👨 Мужчина' };
         let message = gender[rmes.gender] + '\n\nВозраст: ' + rmes.age + '\nСексуальность: ' + parseFloat(rmes.hotness).toFixed(1) + '/10';
 
-        return callback({ message });
+        return callback(message);
       } else {
-        return callback({
-          message: 'Не удалось обнаружить лицо на фото.'
-        });
+        return callback('Не удалось обнаружить лицо на фото.');
       }
     })
     .catch(e => {
