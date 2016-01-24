@@ -102,6 +102,9 @@ module.exports = function (messageObj) {
 * `attachments` (String/Array of Strings): прикрепления к сообщению (если необходимо). Формат прикреплений: [vk.com/dev/messages.send](https://vk.com/dev/messages.send)
 * `forward` (Boolean): _true_ - пересылать исходное сообщение
 
+Также в `Object` вы можете просто передать строку.  
+Тогда приложение посчитает, что `message` = _переданная строка_, а `forward` = _false_.
+
 
 ### Добавление своих команд
 Все команды находятся в папке **app/parsers/commands**.  
