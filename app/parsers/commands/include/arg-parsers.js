@@ -3,9 +3,9 @@
 class ArgParser {
   constructor (msgObj) {
     this.__msgObj = msgObj;
+    this.isNull = false;
   }
 
-  // WORKING ONLY FOR MULTICHATS NOW
   attachment (type) {
     let arg;
 
@@ -18,14 +18,14 @@ class ArgParser {
   }
 
   firstWord () {
-    return this.__msgObj.message.split(' ')[1];
+    return this.__msgObj.message.split(' ')[1] || null;
   }
 
   fullText () {
     let mess = this.__msgObj.message;
     let spaceIndex = mess.indexOf(' ');
 
-    return mess.substr(spaceIndex).trim();
+    return spaceIndex === -1 ? null : (mess.substr(spaceIndex).trim() || null);
   }
 
   textAndNum () {
@@ -42,7 +42,7 @@ class ArgParser {
       if (argWithoutCmd.length > 2) 
         arg = [argWithoutCmd];
       else 
-        arg = null;
+        arg = [null];
     } else {
       arg = [argTextAndNum[1].trim(), argTextAndNum[2]];
     }
@@ -56,11 +56,12 @@ class ArgParser {
 }
 
 module.exports = msgObj => {
+  let parser = new ArgParser(msgObj);
   let textArg = msgObj.message.split(' ')[1];
   let attach = msgObj.attachments.attach1;
 
   if ((textArg === '' || textArg === undefined) && !attach) 
-    return null;
+    parser.isNull = true;
 
-  return new ArgParser(msgObj);
+  return parser;
 }

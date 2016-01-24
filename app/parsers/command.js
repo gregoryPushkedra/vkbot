@@ -13,28 +13,21 @@ module.exports = messageObj => {
       let command = message.split(' ')[0].substr(1);
       let arg = argParser(messageObj);
 
-      // will be called, when command applied successfully
-      function afterComplete (cmdReturnedObj) {
-        if (cmdReturnedObj === null) 
-          return cb(null);
-
-        return cb({
-          message: cmdReturnedObj.message, 
-          attachments: cmdReturnedObj.attachments, 
-          forward: messageObj.isMultichat
-        });
-      }
-
       // command is not exist, nothing to do
       if (!~_cmdList.indexOf(command)) 
         return cb(null);
 
-      // arg is null, show current command help
-      if (arg === null) 
-        return require('./commands/help')([command, _cmdList], afterComplete);
-
       // run command
-      return require('./commands/' + command)(arg, afterComplete);
+      return require('./commands/' + command)(arg, r => {
+        if (r === null) 
+          return cb(null);
+
+        return cb({
+          message: typeof r === 'string' ? r : r.message, 
+          attachments: r.attachments, 
+          forward: messageObj.isMultichat
+        });
+      });
     }
   }
 }
