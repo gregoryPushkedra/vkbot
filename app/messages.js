@@ -108,7 +108,7 @@ class Messages {
       let chatId = fromId - 2000000000;
 
       // updating chat users list
-      if (value[0] === 51 && this.__state.chatUsers[chatId]) 
+      if (value[0] === 51 && this.__state.chatUsers[value[1]]) 
         this.__updateChatComp(parseInt(value[1]));
 
       // checking all incoming messages except messages from Bot
