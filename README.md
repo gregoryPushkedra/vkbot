@@ -43,7 +43,7 @@
 
 ### Запуск
     $ sudo pm2 start start.js --node-args="--nouse-idle-notification --expose-gc" --name vkbot
-    $ sudo pm2 start start.js --node-args="--nouse-idle-notification --expose-gc" --name vkbot -- -debug && sudo pm2 logs vkbot // debug-режим
+    $ sudo pm2 start start.js --node-args="--nouse-idle-notification --expose-gc" --name vkbot -- -debug && sudo pm2 logs // debug-режим
 
 ### Мониторинг процесса
     $ sudo pm2 monit
