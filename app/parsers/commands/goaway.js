@@ -8,7 +8,7 @@
 module.exports = (arg, callback) => {
   let argObj = arg.wholeObj();
   let VK = argObj._vkapi;
-  let reallyRemove = arg.firstWord() === 'now!';
+  let reallyRemove = arg.firstWord() === 'now!' || arg.firstWord() === 'отсюда';
 
   if (!reallyRemove) 
     return callback(null);
