@@ -2,8 +2,11 @@
 
 const cmdList = require('./__list');
 const lang = require('../../config/commands/lang').help;
+const aliases = require('./__aliases');
 
-function availabeCommands (cmdL) {
+function availabeCommands (isMchat) {
+  let cmdL = cmdList.list(isMchat, true);
+
   return '▶ /' + cmdL.map(v => v + ' ' + lang[v][1]).join('\n▶ /');
 }
 
@@ -11,13 +14,14 @@ function availabeCommands (cmdL) {
  * Вывод помощи по использованию бота
  */
 module.exports = (arg, callback) => {
-  let _cmdList = cmdList(arg.wholeObj().isMultichat);
+  let isMultichat = arg.wholeObj().isMultichat;
   let cmd = arg.firstWord() || 'help';
+  let cmdName = cmdList.isExist(cmd, isMultichat);
 
-  if (!~_cmdList.indexOf(cmd)) 
+  if (cmdName === false) 
     return callback(null);
 
-  let helpText = cmd === 'help' ? lang['help'][0](availabeCommands(_cmdList)) : ('▶ /' + (cmd + ' ' + lang[cmd][1]) + '\n\n' + lang[cmd][0]);
+  let helpText = cmdName === 'help' ? lang['help'][0](availabeCommands(isMultichat)) : ('▶ /' + (cmd + ' ' + lang[cmdName][1]) + '\n\n' + lang[cmdName][0] + '\n\n' + 'Псевдонимы команды: /' + cmdName + ', /' + aliases[cmdName].join(', /'));
 
   return callback(helpText);
 }
