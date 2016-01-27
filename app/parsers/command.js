@@ -1,6 +1,6 @@
 'use strict';
 
-const cmdList = require('./commands/__list');
+const isCmdExist = require('./commands/__list').isExist;
 const argParser = require('./commands/include/arg-parsers');
 
 module.exports = messageObj => {
@@ -9,16 +9,16 @@ module.exports = messageObj => {
   return {
     cond: /^\//.test(message), 
     fn: cb => {
-      let _cmdList = cmdList(messageObj.isMultichat);
       let command = message.split(' ')[0].substr(1);
+      let cmdName = isCmdExist(command, messageObj.isMultichat);
       let arg = argParser(messageObj);
 
       // command is not exist, nothing to do
-      if (!~_cmdList.indexOf(command)) 
+      if (cmdName === false) 
         return cb(null);
 
       // run command
-      return require('./commands/' + command)(arg, r => {
+      return require('./commands/' + cmdName)(arg, r => {
         if (r === null) 
           return cb(null);
 
