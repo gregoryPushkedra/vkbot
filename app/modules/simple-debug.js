@@ -1,6 +1,8 @@
 'use strict';
 
-module.exports = text => {
+module.exports = (text, cyan) => {
+  let textColor = cyan ? 36 : 33; // cyan/yellow
+
   if (process.env.DEBUG) 
-    return console.log('\x1b[32m[' + (new Date).toTimeString().split(' ')[0] + ']\x1b[0m\x1b[33m', text, '\x1b[0m');
+    return console.log('\x1b[32m[' + (new Date).toTimeString().split(' ')[0] + ']\x1b[0m\x1b[' + textColor + 'm', text, '\x1b[0m');
 }
