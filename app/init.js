@@ -41,7 +41,7 @@ class InitApp {
           .then(() => {
             debug('+ Token was got and saved to "token.json"')
 
-            this.__getLongPollUrl()
+            return this.__getLongPollUrl();
           });
       })
       .then(link => {
