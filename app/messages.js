@@ -144,7 +144,10 @@ class Messages {
           messageId
         }
 
-        return this.__apply(messToParse)
+        return this.__apply(messToParse).catch(e => {
+            debug('Error in parser was occured: ');
+            debug(e);
+          })
           .then(mesObj => this.__makeMsgObj(messToParse, mesObj))
           .then(m => this.send(m));
       }
