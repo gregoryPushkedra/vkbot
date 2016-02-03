@@ -147,6 +147,8 @@ class Messages {
         return this.__apply(messToParse).catch(e => {
             debug('Error in parser was occured: ');
             debug(e);
+
+            return null;
           })
           .then(mesObj => this.__makeMsgObj(messToParse, mesObj))
           .then(m => this.send(m));
