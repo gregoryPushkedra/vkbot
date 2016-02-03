@@ -25,7 +25,7 @@ module.exports = messageObj => {
         return cb({
           message: typeof r === 'string' ? r : r.message, 
           attachments: r.attachments, 
-          forward: messageObj.isMultichat
+          forward: r.forward !== undefined ? r.forward : messageObj.isMultichat
         });
       });
     }
