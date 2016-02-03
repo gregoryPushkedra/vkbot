@@ -16,6 +16,7 @@ module.exports = {
   klass: ['класс'], 
   music: ['музыка'], 
   photo: ['фото'], 
+  random: ['roll'], 
   tts: ['озвучь', 'скажи'], 
   video: ['видео'], 
   who: ['кто']
