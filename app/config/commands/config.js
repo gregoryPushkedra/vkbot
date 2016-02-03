@@ -46,6 +46,11 @@ module.exports = {
     default: 3
   }, 
 
+  // Настройки команды /random
+  random: {
+    default: '0-100'
+  }, 
+
   // Папки, в которых хранятся временные файлы (путь указан от /app/. (где находится файл start.js))
   path: {
     howhot: './temp/commands/howhot/', 
