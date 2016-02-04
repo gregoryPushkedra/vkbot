@@ -17,7 +17,7 @@ class Messages {
     this.__botDelays = {
       first: 0, // time of last message was sent by bot
       last: 0, // time of last delayed message
-      delay: 7000 // delay in ms
+      delay: 5000 // delay in ms
     }
 
     this.__state = {
