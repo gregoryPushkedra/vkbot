@@ -11,21 +11,32 @@ module.exports = function (messageObj) {
     fn: cb => {
       let message = msg.substr(isM ? 4 : 0).trim();
 
-      return messageObj._cleverbot.write(message)
-        .then(ans => {
-          let retObj;
+      return (function getAnswer () {
+        return messageObj._cleverbot.write(message)
+          .then(ans => {
+            let lAns = ans.toLowerCase();
+            let lMes = message.toLowerCase();
 
-          if (ans.length > 0) {
-            retObj = {
-              message: ans,
-              forward: isM ? true : false
+            if (/[а-я]/.test(lMes) && !/[а-я]/.test(lAns) && /clever/.test(lAns)) 
+              return getAnswer();
+
+            if (!/[а-я]/.test(lMes) && /clever[mbs]/.test(lAns)) 
+              return getAnswer();
+
+            let retObj;
+
+            if (ans.length > 0) {
+              retObj = {
+                message: ans,
+                forward: isM
+              }
+            } else {
+              retObj = null;
             }
-          } else {
-            retObj = null;
-          }
 
-          return cb(retObj);
-        });
+            return cb(retObj);
+          });
+      })();
     }
   }
 }
