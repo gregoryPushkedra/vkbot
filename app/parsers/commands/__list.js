@@ -20,7 +20,7 @@ function cmdList (isMchat, lite) {
     return list;
 
   list.forEach(v => {
-    rlist[v] = aliases[v];
+    rlist[v] = aliases[v] || [];
   });
 
   return rlist;
