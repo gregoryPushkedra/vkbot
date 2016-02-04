@@ -1,7 +1,6 @@
 'use strict';
 
 const fs = require('fs');
-const ffprobe = require('../../modules/node-ffprobe');
 const joinMp3 = require('../../modules/tts-join-mp3');
 const prequest = require('request-promise');
 const pathConfig = require('../../config/commands/config').path;
@@ -23,15 +22,11 @@ module.exports = (arg, callback) => {
   let fileName = pathConfig['tts'] + 'tts_' + Date.now() + '.mp3';
 
   function saveAudio (newTtsFileName) {
-    let uploadFile = newTtsFileName || fileName;
-
-    return VK.upload('audio', fs.createReadStream(uploadFile))
+    return VK.upload('audio', fs.createReadStream(newTtsFileName))
       .then(res => {
         try {
           fs.unlinkSync(fileName);
-
-          if (newTtsFileName) 
-            fs.unlinkSync(newTtsFileName);
+          fs.unlinkSync(newTtsFileName);
         } catch (e) {}
 
         return callback({
@@ -40,12 +35,6 @@ module.exports = (arg, callback) => {
       });
   }
 
-  return prequest(reqUrl).pipe(fs.createWriteStream(fileName)).on('close', () => {
-    ffprobe(fileName, (err, data) => {
-      if (data.duration < 5) 
-        joinMp3(fileName, newFileName => saveAudio(newFileName));
-      else
-        saveAudio();
-    });
-  });
+  return prequest(reqUrl).pipe(fs.createWriteStream(fileName))
+    .on('close', () => joinMp3(fileName, newFileName => saveAudio(newFileName)));
 }
