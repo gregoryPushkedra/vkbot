@@ -145,7 +145,7 @@ class Messages {
         }
 
         return this.__apply(messToParse).catch(e => {
-            debug('Error in parser was occured: ');
+            debug('- Error in parser was occured: ');
             debug(e);
 
             return null;
@@ -210,7 +210,7 @@ class Messages {
           this.__botDelays.first = Date.now();
         })
         .catch(e => {
-          debug('- Error was occured while sending a message');
+          debug('- Error was occured during sending a message');
           debug(e);
         });
     }, delay);
