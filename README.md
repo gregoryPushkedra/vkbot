@@ -4,7 +4,6 @@
 
 Live-пример бота: [vk.com/chatsbot](http://vk.com/chatsbot)
 
-
 ##### Возможности бота
 1. Отвечает на сообщения, используя базу ответов cleverbot.com
 2. Выполняет команды
@@ -17,13 +16,7 @@ Live-пример бота: [vk.com/chatsbot](http://vk.com/chatsbot)
     $ git clone git://github.com/olnaz/vkbot.git && cd vkbot && npm install
     $ sudo npm install pm2 -g
 
-
-Также для работы модуля `node-ffprobe` придется установить `ffmpeg`  
-
-    $ sudo apt-get install ffmpeg
-
 ### Настройка
-
 
 #### Приложение ВКонтакте
 Для работы бота, вам потребуется создать и настроить приложение ВКонтакте.  
