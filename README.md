@@ -1,10 +1,10 @@
-## Чат-бот для ВКонтакте
+## Chatbot for VKontakte (vk.com)
 
 Работает через Long-Poll и отвечает мгновенно или с задержкой, если это необходимо.  
 
 Live-пример бота: [vk.com/chatsbot](http://vk.com/chatsbot)
 
-##### Возможности бота
+##### Features
 1. Отвечает на сообщения, используя базу ответов cleverbot.com
 2. Выполняет команды
 3. Автоматически принимает заявки в друзья
@@ -12,20 +12,20 @@ Live-пример бота: [vk.com/chatsbot](http://vk.com/chatsbot)
 5. Лёгкое добавление новых команд (см. [Добавление команд](#Добавление-своих-команд))
 6. Лёгкое добавление новых условий парсинга входящий сообщений (см. [Добавление парсеров](#Добавление-своих-парсеров))
 
-### Установка
+### Installation
     $ git clone git://github.com/olnaz/vkbot.git && cd vkbot && npm install
     $ sudo npm install pm2 -g
 
-### Настройка
+### Setting up
 
-#### Приложение ВКонтакте
+#### Application
 Для работы бота, вам потребуется создать и настроить приложение ВКонтакте.  
 
-##### Создание приложения
+##### Creating the app
 Перейдите по ссылке [vk.com/apps](http://vk.com/apps) и нажмите "Создать приложение".  
 При создании приложения, необходимо указать тип "Standalone".
 
-##### Создание методов
+##### Creating methods
 Перейдите в настройки созданного приложения, затем на вкладку "Хранимые процедуры".  
 Скопируйте все методы из папки **__execute** в "Хранимые процедуры" вашего приложения.  
 
@@ -33,15 +33,15 @@ Live-пример бота: [vk.com/chatsbot](http://vk.com/chatsbot)
 Содержимое файла = код процедуры
 
 
-#### Файл `start.js`
+#### File `start.js`
 В файле `start.js` необходимо указать ID приложения, логин и пароль бота, а также API-key к сайту anti-captcha.com (если вы хотите, чтобы бот разгадывал капчу).
 
 
-### Запуск
+### Starting
     $ sudo pm2 start start.js --node-args="--nouse-idle-notification --expose-gc" --name vkbot
     $ sudo pm2 start start.js --node-args="--nouse-idle-notification --expose-gc" --name vkbot -- -debug && sudo pm2 logs // debug-режим
 
-### Мониторинг процесса
+### Process monitoring
     $ sudo pm2 monit
 
 Документация к PM2: [github.com/Unitech/pm2](https://github.com/Unitech/pm2)
@@ -174,6 +174,6 @@ module.exports = (arg, callback) => {
 ```
 
 
-### О командах
+### About commands
 Списки команд для бесед и персональных сообщений разные, имейте это в виду.  
 Указать, какие команды являются уникальными, можно в файле **app/parsers/commands/__list.js**.
