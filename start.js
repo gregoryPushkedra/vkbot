@@ -13,10 +13,10 @@ if (process.argv.slice(2)[0] === '-debug')
  */
 
 let params = {
-  appId: ID, 
-  login: 'LOGIN', 
-  pass: 'PASS', 
-  antiCaptchaKey: 'KEY'
+  appId: ID, // int
+  login: 'LOGIN', // string
+  pass: 'PASS', // string
+  antiCaptchaKey: null // string or null
 }
 
 app
