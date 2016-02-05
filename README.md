@@ -1,11 +1,9 @@
 ## Chatbot for VKontakte (vk.com)
 
-Работает через Long-Poll и отвечает мгновенно или с задержкой, если это необходимо.  
-
-Live-пример бота: [vk.com/chatsbot](http://vk.com/chatsbot)
+Live example: [vk.com/chatsbot](http://vk.com/chatsbot)
 
 ##### Features
-1. Отвечает на сообщения, используя базу ответов cleverbot.com
+1. Replies to messages using cleverbot.com answers database.
 2. Выполняет команды
 3. Автоматически принимает заявки в друзья
 4. Автоматически обновляет статус и выводит текущее состояние бота
@@ -19,23 +17,12 @@ Live-пример бота: [vk.com/chatsbot](http://vk.com/chatsbot)
 ### Setting up
 
 #### Application
-Для работы бота, вам потребуется создать и настроить приложение ВКонтакте.  
-
-##### Creating the app
-Перейдите по ссылке [vk.com/apps](http://vk.com/apps) и нажмите "Создать приложение".  
-При создании приложения, необходимо указать тип "Standalone".
-
-##### Creating methods
-Перейдите в настройки созданного приложения, затем на вкладку "Хранимые процедуры".  
-Скопируйте все методы из папки **__execute** в "Хранимые процедуры" вашего приложения.  
-
-Название файла = название процедуры (не включая _.js_)  
-Содержимое файла = код процедуры
-
+Go to [vk.com/apps](http://vk.com/apps) and create your own "Standalone" application.  
+Open settings of the app and add new methods from **__execute** folder (method name = file name without _.js_)
 
 #### File `start.js`
-В файле `start.js` необходимо указать ID приложения, логин и пароль бота, а также API-key к сайту anti-captcha.com (если вы хотите, чтобы бот разгадывал капчу).
-
+Open the file `start.js` and specify App ID, Login and Password of bot account.  
+Also you can specify anti-captcha.com API-key needed for recognizing captcha.
 
 ### Starting
     $ sudo pm2 start start.js --node-args="--nouse-idle-notification --expose-gc" --name vkbot
@@ -46,8 +33,7 @@ Live-пример бота: [vk.com/chatsbot](http://vk.com/chatsbot)
 
 Документация к PM2: [github.com/Unitech/pm2](https://github.com/Unitech/pm2)
     
-
-После первого старта полученный токен будет сохранен в файл **./token.json** и при последующих запусках будет браться оттуда.
+After the first start `access_token` will be saved to **./token.json**.
 
 
 ### Добавление своих парсеров
