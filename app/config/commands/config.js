@@ -2,7 +2,7 @@
 
 module.exports = {
 
-  // Настройки для поиска музыки, видео и фото
+  // __vk-search.js
   search: {
     music: {
       label: 'audio', 
@@ -40,13 +40,13 @@ module.exports = {
     }
   }, 
 
-  // Настройки команды /create
+  // create.js
   create: {
     max: 20, 
     default: 3
   }, 
 
-  // Настройки команды /random
+  // random.js
   random: {
     default: '0-100'
   }, 
