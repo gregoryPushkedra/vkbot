@@ -9,7 +9,7 @@ module.exports = messageObj => {
   return {
     cond: /^\//.test(message), 
     fn: cb => {
-      let command = message.split(' ')[0].substr(1);
+      let command = message.split(' ')[0].substr(1).toLowerCase();
       let cmdName = isCmdExist(command, messageObj.isMultichat);
       let arg = argParser(messageObj);
 
