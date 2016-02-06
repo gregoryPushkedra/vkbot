@@ -1,17 +1,11 @@
 'use strict';
 
 /**
- * Выгоняет бота из текущего чата. 
- *
- * Необходимо, чтобы был передан параметр 'now!' (чего в помощи по команде не написано)
+ * Kicks Bot from a multichat
  */
 module.exports = (arg, callback) => {
   let argObj = arg.wholeObj();
   let VK = argObj._vkapi;
-  let reallyRemove = arg.firstWord() === 'now!' || arg.firstWord() === 'отсюда';
-
-  if (!reallyRemove) 
-    return callback(null);
 
   return VK.call('messages.removeChatUser', {
     chat_id: argObj.chatId, 

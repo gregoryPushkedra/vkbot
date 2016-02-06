@@ -11,7 +11,7 @@ function availabeCommands (isMchat) {
 }
 
 /**
- * Вывод помощи по использованию бота
+ * Outputs Bot help (commands, etc.)
  */
 module.exports = (arg, callback) => {
   let isMultichat = arg.wholeObj().isMultichat;

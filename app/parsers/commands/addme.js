@@ -3,7 +3,7 @@
 const randomElem = require('../../other/helpers').randomElem;
 
 /**
- * Приглашает пользователя в случайную беседу
+ * Invites user in random Bot's multichat
  */
 module.exports = (arg, callback) => {
   let mObj = arg.wholeObj();
@@ -19,7 +19,7 @@ module.exports = (arg, callback) => {
         user_id: userId
       });
     })
-    .then(success => callback(null)) // успешно приглашен
+    .then(success => callback(null)) // was invited successfully
     .catch(err => {
       return callback('Не удалось пригласить вас в беседу :(\n\nПричины:\n1. Беседа переполнена\n2. Вы уже состоите в этой беседе');
     });

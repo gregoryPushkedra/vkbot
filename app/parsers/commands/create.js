@@ -3,7 +3,7 @@
 const createCfg = require('../../config/commands/config').create;
 
 /**
- * Создает беседу со случайными друзьями бота
+ * Creates a multichat with Bot's friends
  */
 module.exports = (arg, callback) => {
   let count = parseInt(arg.firstWord() || createCfg.default);

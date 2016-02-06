@@ -6,11 +6,10 @@ const path = require('path');
 const aliases = require('./__aliases');
 
 function cmdList (isMchat, lite) {
-  let onlyForMultichat = ['goaway', 'who', 'invite']; // только для бесед
-  let onlyForPersonal = ['create', 'addme']; // только для ЛС
+  let onlyForMultichat = ['goaway', 'who', 'invite']; // only for multichats
+  let onlyForPersonal = ['create', 'addme']; // only for personal messages
 
-  let rlist = {};
-
+  // array of filtered commands
   let list = fs.readdirSync(__dirname)
     .filter(v => v.endsWith('.js') && !v.startsWith('__'))
     .map(v => v.slice(0, -3))
@@ -18,6 +17,9 @@ function cmdList (isMchat, lite) {
 
   if (lite === true) 
     return list;
+
+  // obj of commands with their aliases
+  let rlist = {};
 
   list.forEach(v => {
     rlist[v] = aliases[v] || [];
@@ -27,7 +29,7 @@ function cmdList (isMchat, lite) {
 }
 
 /**
- * If command exists, function will return its name
+ * If command exists, function will return its name, else => false
  */
 function isExist (command, isMchat) {
   let list = cmdList(isMchat);
