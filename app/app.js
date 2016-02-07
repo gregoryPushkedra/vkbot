@@ -1,12 +1,16 @@
 'use strict';
 
+const EventEmitter = require('events').EventEmitter;
+
 const VKApi = require('node-vkapi');
 const debug = require('./modules/simple-debug');
 
 const Init = require('./init');
 
-class App {
+class App extends EventEmitter {
   constructor () {
+    super();
+
     this.__configured = false;
     this.__initialized = false;
 
@@ -39,6 +43,8 @@ class App {
         delete this.__vkParams;
 
         debug('+ App was initialized');
+
+        this.emit('initialized');
       })
       .catch(err => {
         debug('- Unable to initialize app');
