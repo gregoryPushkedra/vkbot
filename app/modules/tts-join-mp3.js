@@ -7,7 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const pathConfig = require('../config/commands/config').path;
+const pathConfig = require('../parsers/config/config').path;
 
 let newFile;
 let newFileName;
