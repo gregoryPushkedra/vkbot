@@ -5,9 +5,7 @@ const pm2 = require('pm2');
 const VKApi = require('node-vkapi');
 
 class Extensions {
-  constructor (settings) {
-    this.__status = settings.status || true;
-    this.__friends = settings.friends || true;
+  constructor () {
     this.__interval = 5; // in minutes
 
     this.__vkapi = new VKApi({ token: require('./token').access_token });
@@ -37,7 +35,12 @@ class Extensions {
     let hours = Math.floor((uptime - (days*60*24))/60);
     let minutes = Math.round(uptime % 60);
 
-    return (days !== 0 ? (days + ' дн. ') : '') + (hours !== 0 ? (hours + ' ч. ') : '') + (minutes !== 0 ? (minutes + ' мин.') : '');
+    let uptimeText = (days !== 0 ? (days + ' дн. ') : '') + (hours !== 0 ? (hours + ' ч. ') : '') + (minutes !== 0 ? (minutes + ' мин.') : '');
+
+    if (uptimeText.trim() === '') 
+      uptimeText = 'бот только что запущен :)';
+
+    return uptimeText;
   }
 
   __getStatus () {
@@ -48,7 +51,7 @@ class Extensions {
       let uptime = this.__getUptime(createTime);
       let statusText = status === 'online' ? ('✅ Онлайн | Аптайм: ' + uptime) : '😴 Оффлайн'
 
-      return resovle(statusText);
+      return resolve(statusText);
     })));
   }
 

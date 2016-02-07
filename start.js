@@ -1,9 +1,12 @@
 'use strict';
 
-const spawn = require('child_process').spawn;
+const Extensions = require('./extensions');
 
 let app = require('./app');
 let parsers = require('./app/parsers');
+let middlewares = require('./app/middlewares');
+
+let ext;
 
 if (process.argv.slice(2)[0] === '-debug') 
   process.env.DEBUG = true;
@@ -21,14 +24,13 @@ let params = {
 
 app
   .configure(params)
-  .use(parsers)
+  .use({ parsers, middlewares })
   .start();
 
-/**
- * Starting extentions (auto-status, auto-adding friends)
- */
+app.once('initialized', () => {
+  ext = new Extensions();
+  ext.start();
+});
 
-spawn('sudo', ['pm2', 'start', 'autochecks.js', '--name', 'achks'], {
-  stdio: 'ignore', 
-  detached: true
-}).unref();
+// SIGINT signall received
+process.on('SIGINT', () => ext.shutdown());
