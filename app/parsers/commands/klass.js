@@ -3,7 +3,7 @@
 const fs = require('fs');
 const prequest = require('request-promise');
 const parsers = require('./include/parsers');
-const pathConfig = require('../../config/commands/config').path;
+const pathConfig = require('../config/config').path;
 
 /**
  * Ищет и возвращает мемчик с сайта stavklass.ru по запросу

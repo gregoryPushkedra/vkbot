@@ -3,7 +3,7 @@
 const fs = require('fs');
 const debug = require('../../modules/simple-debug');
 const prequest = require('request-promise');
-const pathConfig = require('../../config/commands/config').path;
+const pathConfig = require('../config/config').path;
 
 /**
  * Определяет сексуальность человека

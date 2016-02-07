@@ -4,7 +4,7 @@ const fs = require('fs');
 const debug = require('../../modules/simple-debug');
 const prequest = require('request-promise');
 const parsers = require('./include/parsers');
-const pathConfig = require('../../config/commands/config').path;
+const pathConfig = require('../config/config').path;
 
 /**
  * Осуществляет поиск изображния в Google

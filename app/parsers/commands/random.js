@@ -1,6 +1,6 @@
 'use strict';
 
-const randomConfig = require('../../config/commands/config').random;
+const randomConfig = require('../config/config').random;
 
 function randomInteger (arrFromTo) {
   let min = parseInt(arrFromTo[0]);

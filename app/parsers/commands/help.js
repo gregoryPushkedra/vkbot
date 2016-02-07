@@ -1,7 +1,7 @@
 'use strict';
 
 const cmdList = require('./__list');
-const lang = require('../../config/commands/lang').help;
+const lang = require('../config/lang').help;
 const aliases = require('./__aliases');
 
 function availabeCommands (isMchat) {

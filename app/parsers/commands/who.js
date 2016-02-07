@@ -1,6 +1,6 @@
 'use strict';
 
-const lang = require('../../config/commands/lang').who;
+const lang = require('../config/lang').who;
 const randomElem = require('../../other/helpers').randomElem;
 
 /**

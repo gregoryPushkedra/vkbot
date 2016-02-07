@@ -1,9 +1,9 @@
 'use strict';
 
-const searchConfig = require('../../config/commands/config').search;
+const searchConfig = require('../config/config').search;
 
 /**
- * Выполняет поиск видео/аудио-записей и фотографий
+ * Searches video/audio/photo on VK.COM
  */
 module.exports = (type, callback, VK, q, count) => {
   let typeObj = searchConfig[type];

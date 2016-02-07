@@ -1,6 +1,6 @@
 'use strict';
 
-const createCfg = require('../../config/commands/config').create;
+const createCfg = require('../config/config').create;
 
 /**
  * Creates a multichat with Bot's friends

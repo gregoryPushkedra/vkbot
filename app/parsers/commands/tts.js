@@ -3,7 +3,7 @@
 const fs = require('fs');
 const joinMp3 = require('../../modules/tts-join-mp3');
 const prequest = require('request-promise');
-const pathConfig = require('../../config/commands/config').path;
+const pathConfig = require('../config/config').path;
 
 /**
  * Озвучивание текста и заливка аудиозаписи во ВКонтакте
