@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * Simple debug logs
+ */
+
 module.exports = (text, cyan) => {
   let textColor = cyan ? 36 : 33; // cyan/yellow
 
