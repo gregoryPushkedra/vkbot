@@ -7,9 +7,12 @@ const Init = require('./init');
 
 class App {
   constructor () {
-    this.__initialized = false;
     this.__configured = false;
-    this.__parsers = []; // Parsers to use
+    this.__initialized = false;
+
+    this.__parsers = []; // Parsers
+    this.__middlewares = []; // Middlewares
+
     this.__m = null; // Messages instance
     this.__errNum = 0; // Number of errors catched
   }
@@ -29,8 +32,10 @@ class App {
 
         this.__m = res.Messages;
         this.__m.__parsers = this.__parsers;
+        this.__m.__middlewares = this.__middlewares;
 
         delete this.__parsers;
+        delete this.__middlewares;
         delete this.__vkParams;
 
         debug('+ App was initialized');
@@ -69,16 +74,21 @@ class App {
   }
 
   /**
-   * Setting up parsers
-   * @param  {Array} parsers
+   * Setting up parsers & middlewares
+   * @param  {Object} obj
    * @return {App instance}
    */
-  use (parsers) {
-    if (Array.isArray(parsers)) 
-      this.__parsers.push(...parsers);
+  use (obj) {
+    for (let key in obj) {
+      let value = obj[key];
+      let varName = `__${key}`;
 
-    if (typeof parsers === 'function') 
-      this.__parsers.push(parsers);
+      if (Array.isArray(value)) 
+        this[varName].push(...value);
+
+      if (typeof value === 'function') 
+        this[varName].push(value);
+    }
 
     return this;
   }

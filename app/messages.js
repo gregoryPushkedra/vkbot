@@ -12,6 +12,7 @@ class Messages {
     this.__botId = parseInt(botId);
 
     this.__parsers = null;
+    this.__middlewares = null;
     this.__cleverbot = null;
 
     this.__botDelays = {
@@ -36,7 +37,23 @@ class Messages {
     }
   }
 
-  __apply (messageObj) {
+  __applyMiddlewares (messageObj) {
+    return new Promise(resolve => {
+      let newVars = [];
+      let output;
+
+      debug('= Applying middlewares');
+
+      for (let i = 0, len = this.__middlewares.length; i < len; i++) 
+        newVars.push(this.__middlewares[i](messageObj));
+
+      output = Object.assign(messageObj, ...newVars);
+
+      return resolve(output);
+    });
+  }
+
+  __applyParser (messageObj) {
     return new Promise(resolve => {
       let parserToUse = this.__parsers.filter(v => v(messageObj).cond).map(v => v(messageObj).fn)[0];
 
@@ -47,6 +64,17 @@ class Messages {
 
       return parserToUse(res => resolve(res));
     });
+  }
+
+  __apply (messageObj) {
+    return this.__applyMiddlewares(messageObj)
+      .then(m => this.__applyParser(m))
+      .catch(e => {
+        debug('- Error in "Messages.__apply" function was occured: ');
+        debug(e);
+
+        return null;
+      });
   }
 
   __updateFullLinkAndStart () {
@@ -80,8 +108,8 @@ class Messages {
     if (typeof mesNew === 'string') 
       mesNew = { message: mesNew };
 
-    let _to = mesOld.chatId < 0 ? 'user_id' : 'chat_id';
-    let _toId = mesOld.chatId < 0 ? mesOld.fromId : mesOld.chatId;
+    let _to = mesOld.isMultichat ? 'chat_id' : 'user_id';
+    let _toId = mesOld.chatId;
 
     return {
       [_to]: _toId,
@@ -101,12 +129,6 @@ class Messages {
     debug('= Processing updates');
 
     updates.forEach(value => {
-      // conversation ID
-      let fromId = parseInt(value[3]);
-
-      // multichat ID
-      let chatId = fromId - 2000000000;
-
       // updating chat users list
       if (value[0] === 51 && this.__state.chatUsers[value[1]]) 
         this.__updateChatComp(parseInt(value[1]));
@@ -116,40 +138,41 @@ class Messages {
         let message = value[6];
         let messageId = value[1];
         let attachments = value[7];
-        let isMultichat = attachments.from && chatId > 0;
-        let dialogId = isMultichat ? chatId : fromId;
-        let isEqualToLast = this.__state.lastMessage.user[dialogId] ? message === this.__state.lastMessage.user[dialogId] : false;
+
+        let convId = parseInt(value[3]); // conversation ID
+        let mchatId = convId - 2000000000; // multichat ID
+        let mchatFromId = parseInt(attachments.from); // from ID in multichat
+
+        let isMultichat = mchatFromId || false;
+        let dialogId = isMultichat ? mchatId : convId;
+        let fromId = isMultichat ? mchatFromId : convId;
 
         // current chat users were not got, getting them
-        if (!this.__state.chatUsers[chatId] && isMultichat) 
-          this.__updateChatComp(chatId);
+        if (isMultichat && !this.__state.chatUsers[mchatId]) 
+          this.__updateChatComp(mchatId);
 
         // if two last messages from users are identical => skip this update-value
-        if (isEqualToLast) 
+        if (message === this.__state.lastMessage.user[dialogId]) 
           return;
 
         // saving last message
         this.__state.lastMessage.user[dialogId] = message;
 
+        // message object (will be used in middlewares & parsers)
         let messToParse = {
           _cleverbot: this.__cleverbot, 
           _vkapi: this.__vkapi, 
           attachments, 
           botId: this.__botId, 
-          chatId, 
-          chatUsers: this.__state.chatUsers[chatId] || null, 
+          chatId: dialogId, 
+          chatUsers: isMultichat && this.__state.chatUsers[mchatId] || null, 
           fromId, 
           isMultichat, 
           message, 
           messageId
         }
 
-        return this.__apply(messToParse).catch(e => {
-            debug('- Error in parser was occured: ');
-            debug(e);
-
-            return null;
-          })
+        return this.__apply(messToParse)
           .then(mesObj => this.__makeMsgObj(messToParse, mesObj))
           .then(m => this.send(m));
       }
