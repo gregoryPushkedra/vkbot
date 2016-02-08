@@ -4,16 +4,18 @@ Live example: [vk.com/chatsbot](http://vk.com/chatsbot)
 
 ##### Features
 1. Replies to messages using cleverbot.com answers database.
-2. Performs commands
-3. Accepts friend requests automatically
+2. Performs commands.
+3. Accepts friend requests automatically.
 4. Updates status automatically (prints actual bot state)
-5. Easy adding new commands (см. [Добавление команд](#Добавление-своих-команд))  
-   Parsers (см. [Добавление парсеров](#Добавление-своих-парсеров))  
-   And middlewares (?)
+5. Easy adding new commands (see [Adding commands](#adding-commands))  
+   Parsers (see [Adding parsers](#adding-parsers))  
+   And middlewares.
+
 
 ### Installation
     $ git clone git://github.com/olnaz/vkbot.git && cd vkbot && npm install
     $ sudo npm install pm2 -g
+
 
 ### Setting up
 
@@ -25,9 +27,11 @@ Open settings of the app and add new methods from **__execute** folder (method n
 Open the file `start.js` and specify App ID, Login and Password of bot account.  
 Also you can specify anti-captcha.com API-key needed for recognizing captcha.
 
+
 ### Starting
     $ sudo pm2 start start.js --name vkbot
-    $ sudo pm2 start start.js --name vkbot -- -debug && sudo pm2 logs // debug-режим
+    $ sudo pm2 start start.js --name vkbot -- -debug && sudo pm2 logs // for debugging
+
 
 ### Process monitoring
     $ sudo pm2 monit
@@ -79,18 +83,15 @@ Each parser must export function that takes one argument `messageObj` and return
 `cond` - if `true`, this parser will be used.  
 `fn` - callback-function that will be called if `cond === true`.
 
-Внутри функции `fn` необходимо, по завершении операций, вызывать `callback(Object)`, где `Object` - объект с возвращаемыми данными. 
+Inside the function `fn`, you must call `callback(Object)`-function, when all operations were done.
 
-`Object` может содержать следующие свойства:
-* `message` (String): сообщение, которое будет отправлено ботом
-* `attachments` (String/Array of Strings): прикрепления к сообщению (если необходимо). Формат прикреплений: [vk.com/dev/messages.send](https://vk.com/dev/messages.send)
-* `forward` (Boolean): _true_ - пересылать исходное сообщение
-
-Также в `Object` вы можете просто передать строку.  
-Тогда приложение посчитает, что `message` = _переданная строка_, а `attachments` и `forward` = _null_.
+`Object`:
+* `message` (String): Message to send
+* `attachments` (String/Array of Strings): Message attachments (optional) [vk.com/dev/messages.send](https://vk.com/dev/messages.send)
+* `forward` (Boolean): if _true_, the source message will be forwarded.
 
 
-### Добавление своих команд
+### Adding commands
 Все команды находятся в папке **app/parsers/commands**.  
 Файлы, названия которых начинаются с "__", являются "приватными" и могут быть использованы только внутри приложения.  
 Простой пользователь из ВКонтакте не сможет вызвать команду *__list.js* или *__vk-search.js*.
@@ -98,70 +99,37 @@ Each parser must export function that takes one argument `messageObj` and return
 Чтобы добавить свою команду в приложение, необходимо поместить .js-файл с кодом команды в папку **app/parsers/commands**.  
 Также не забудьте добавить описание к вашей команде в файл **app/config/commands/lang.js**.
 
-Каждый .js-файл с кодом команды должен экспортировать функцию, которая принимает два аргумента: `arg` и `callback`.  
+Each command .js-file must export function that takes two arguments `arg` and `callback`.  
+Inside the function, you must call `callback(Object)`-function, when all operations were done. (see [Adding parsers](#adding-parsers))
 
-`arg` - парсер аргументов  
-`callback` - callback-функция, идентичная той, что в парсерах входящих сообщений (см. [Добавление парсеров](#Добавление-своих-парсеров))
+`arg` - arguments parser  
+`callback` - callback-function (see [Adding parsers](#adding-parsers))
 
-`arg` получает на вход исходный объект с входящим сообщением и облегчает парсинг переданных аргументов. 
+`arg` object methods:
+* `firstWord()`: returns the first word
+* `fullText()`: returns the full text
+* `textAndNum()`: returns the array [text, number] or [text], if number was not specified
+* `attachment(type)`: returns the array [attachment, messageId], or **null**
+* `wholeObj()`: returns the source `messageObj` object
 
-Объект `arg` содержит следующие методы:
-* `firstWord()`: вернет первое слово
-* `fullText()`: вернет весь текст
-* `textAndNum()`: вернет массив [текст, число] или [текст], если число не было передано (Используется в командах _/music_, _/video_, _/photo_ и т.д.)
-* `attachment(type)`: вернет массив [attachment, messageId], либо **null** (Используется в командах _/howold_, _/howhot_)
-* `wholeObj()`: вернет исходный объект с входящим сообщением
-
-Пример кода команды:
+Example:
 ```javascript
-// app/parsers/commands/klass.js
+// app/parsers/commands/example.js
 'use strict';
 
-const fs = require('fs');
-const prequest = require('request-promise');
-const parsers = require('./include/parsers');
-const pathConfig = require('../../config/commands/config').path;
-
-/**
- * Ищет и возвращает мемчик с сайта stavklass.ru по запросу
- */
 module.exports = (arg, callback) => {
   let argText = arg.fullText();
   let VK = arg.wholeObj()._vkapi;
+  
+  let reply = ~argText.indexOf('example') ? 'Example message' : null;
 
-  let reqUrl = 'http://stavklass.ru/images/search?image[text]=' + encodeURIComponent(argText);
-  let randomUrl = 'http://stavklass.ru/images/random.jpg?n=' + Date.now();
-
-  let fileName = pathConfig['klass'] + 'klass_' + Date.now() + '.jpg';
-  let isRandom = argText === 'random';
-
-  reqUrl = isRandom ? randomUrl : reqUrl;
-
-  return prequest(reqUrl, { encoding: isRandom ? null : 'utf8' })
-        .then(res => isRandom ? res : parsers.parseStavKlassImgUrl(res))
-        .then(imgurl => isRandom ? imgurl : prequest(imgurl, { encoding: null }))
-        .then(imgbody => new Promise(resolve => fs.writeFile(fileName, imgbody, () => resolve(fileName))))
-        .then(file => VK.upload('photo_pm', fs.createReadStream(file)))
-        .then(res => {
-          try {
-            fs.unlinkSync(fileName);
-          } catch (e) {}
-
-          return callback({
-            attachments: 'photo' + res[0].owner_id + '_' + res[0].id
-          });
-        })
-        .catch(err => {
-          if (err !== undefined && err.statusCode == '500') {
-            return callback({
-              message: 'По запросу <<' + argText + '>> ничего не найдено.'
-            });
-          }
-        });
+  return callback({
+    message: reply
+  });
 }
 ```
 
 
 ### About commands
-Списки команд для бесед и персональных сообщений разные, имейте это в виду.  
-Указать, какие команды являются уникальными, можно в файле **app/parsers/commands/__list.js**.
+Commands for personal messages and multichats are different. 
+You can specify which commands are unique in the file **app/parsers/commands/__list.js**.
