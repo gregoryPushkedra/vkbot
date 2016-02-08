@@ -26,22 +26,23 @@ Open the file `start.js` and specify App ID, Login and Password of bot account.
 Also you can specify anti-captcha.com API-key needed for recognizing captcha.
 
 ### Starting
-    $ sudo pm2 start start.js --node-args="--nouse-idle-notification --expose-gc" --name vkbot
-    $ sudo pm2 start start.js --node-args="--nouse-idle-notification --expose-gc" --name vkbot -- -debug && sudo pm2 logs // debug-режим
+    $ sudo pm2 start start.js --name vkbot
+    $ sudo pm2 start start.js --name vkbot -- -debug && sudo pm2 logs // debug-режим
 
 ### Process monitoring
     $ sudo pm2 monit
 
-Документация к PM2: [github.com/Unitech/pm2](https://github.com/Unitech/pm2)
+PM2 documentation: [github.com/Unitech/pm2](https://github.com/Unitech/pm2)
     
 After the first start `access_token` will be saved to **./token.json**.
 
 
-### Добавление своих парсеров
-Парсеры входящих сообщений находятся в папке **app/parsers**. На данный момент их три: _appeal.js_, _command.js_, _multichat-invite.js_.  
+### Adding parsers
+Parsers are need for processing incoming messages and running certain script depending on the message body.  
+They are in the **app/parsers** folder.
 
-Парсеров может быть неограниченное количество, но ко входящему сообщению будет применен **первый**, подходящий под условие парсер.  
-Для того, чтобы парсер начал использоваться приложением, достаточно просто поместить его в папку **app/parsers**.
+Amount of parsers isn't limited, but to the incoming message will be applied **first** parser fit for condition.  
+To force the app to use your parser, you need to put it into **app/parsers** folder.
 
 Пример кода парсера:
 ```javascript
