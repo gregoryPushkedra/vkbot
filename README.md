@@ -92,12 +92,10 @@ Inside the function `fn`, you must call `callback(Object)`-function, when all op
 
 
 ### Adding commands
-Все команды находятся в папке **app/parsers/commands**.  
-Файлы, названия которых начинаются с "__", являются "приватными" и могут быть использованы только внутри приложения.  
-Простой пользователь из ВКонтакте не сможет вызвать команду *__list.js* или *__vk-search.js*.
+All commands are in the **app/parsers/commands** folder.  
+Files that name starts with "__" are "private" and can be used only inside the app.
 
-Чтобы добавить свою команду в приложение, необходимо поместить .js-файл с кодом команды в папку **app/parsers/commands**.  
-Также не забудьте добавить описание к вашей команде в файл **app/config/commands/lang.js**.
+To force the app to use your command, you need to put it into **app/parsers/commands** folder, add its description in the file **app/parsers/config/lang.js**, and specify aliases for it (optional) in the file **app/config/commands/__aliases.js**
 
 Each command .js-file must export function that takes two arguments `arg` and `callback`.  
 Inside the function, you must call `callback(Object)`-function, when all operations were done. (see [Adding parsers](#adding-parsers))
@@ -131,5 +129,5 @@ module.exports = (arg, callback) => {
 
 
 ### About commands
-Commands for personal messages and multichats are different. 
+Commands for personal messages and multichats are different.  
 You can specify which commands are unique in the file **app/parsers/commands/__list.js**.
