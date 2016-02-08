@@ -4,11 +4,12 @@ Live example: [vk.com/chatsbot](http://vk.com/chatsbot)
 
 ##### Features
 1. Replies to messages using cleverbot.com answers database.
-2. Выполняет команды
-3. Автоматически принимает заявки в друзья
-4. Автоматически обновляет статус и выводит текущее состояние бота
-5. Лёгкое добавление новых команд (см. [Добавление команд](#Добавление-своих-команд))
-6. Лёгкое добавление новых условий парсинга входящий сообщений (см. [Добавление парсеров](#Добавление-своих-парсеров))
+2. Performs commands
+3. Accepts friend requests automatically
+4. Updates status automatically (prints actual bot state)
+5. Easy adding new commands (см. [Добавление команд](#Добавление-своих-команд))  
+   Parsers (см. [Добавление парсеров](#Добавление-своих-парсеров))  
+   And middlewares (?)
 
 ### Installation
     $ git clone git://github.com/olnaz/vkbot.git && cd vkbot && npm install
