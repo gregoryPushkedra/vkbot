@@ -41,10 +41,10 @@ After the first start `access_token` will be saved to **./token.json**.
 Parsers are need for processing incoming messages and running certain script depending on the message body.  
 They are in the **app/parsers** folder.
 
-Amount of parsers isn't limited, but to the incoming message will be applied **first** parser fit for condition.  
+Amount of parsers isn't limited, but to the incoming message will be applied the **first** parser fit for condition.  
 To force the app to use your parser, you need to put it into **app/parsers** folder.
 
-Пример кода парсера:
+Example:
 ```javascript
 // app/parsers/example.js
 'use strict';
@@ -54,7 +54,7 @@ module.exports = function (messageObj) {
     cond: messageObj.message.startsWith('@@@'), 
     fn: callback => {
       return callback({
-        message: '@@@ Сообщение-ответ', 
+        message: '@@@ Message to send', 
         forward: messageObj.isMultichat
       });
     }
@@ -62,22 +62,22 @@ module.exports = function (messageObj) {
 }
 ```
 
-То есть каждый .js-файл (парсер) должен экспортировать функцию, которая принимает один аргумент (объект с входящим сообщением `messageObj`) и возвращает объект с одним свойством `cond` и одним методом `fn`.
+Each parser must export function that takes one argument `messageObj` and returns object with `cond` property and `fn` method.
 
-`messageObj` всегда содержит следующие свойства:
-* `_cleverbot` (Object): экземпляр класса __Cleverbot__. Используется в парсере _appeal.js_.
-* `_vkapi` (Object): экземпляр класса __VKApi__
-* `attachments` (Object): объект прикреплений во входящем сообщении (см. [vk.com/dev/using_longpoll](http://vk.com/dev/using_longpoll))
-* `botId` (Number): ID текущего бота
-* `chatId` (Number): ID текущей беседы (если он отрицательный, используйте `fromId`)
-* `chatUsers` (Object): Объект с пользователями текущей беседы (Формат: _{userId: userFirstName}_)
-* `fromId` (Number): ID пользователя, от которого пришло сообщение (если сообщение пришло в беседе, используйте `attachments.from`)
-* `isMultichat` (Boolean): _true_, если сообщение пришло в беседе
-* `message` (String): текст сообщения
-* `messageId` (Number): ID сообщения
+`messageObj`:
+* `_cleverbot` (Object): __Cleverbot__ instance.
+* `_vkapi` (Object): __VKApi__ instance.
+* `attachments` (Object): Message attachments. ([vk.com/dev/using_longpoll](http://vk.com/dev/using_longpoll))
+* `botId` (Number)
+* `chatId` (Number): `=== fromId` for tet-a-tet chats
+* `chatUsers` (Object): Data format: _{userId: userFirstName}_
+* `fromId` (Number): User ID (message owner)
+* `isMultichat` (Boolean): _true_, if message has come in a multichat
+* `message` (String): Message text
+* `messageId` (Number): Message ID
 
-`cond` - условие, при котором данный парсер будет использован. (Здесь, условие: _входящее сообщение начинается с @@@_)  
-`fn` - callback-функция, которая будет вызвана, если _cond === true_.
+`cond` - if `true`, this parser will be used.  
+`fn` - callback-function that will be called if `cond === true`.
 
 Внутри функции `fn` необходимо, по завершении операций, вызывать `callback(Object)`, где `Object` - объект с возвращаемыми данными. 
 
