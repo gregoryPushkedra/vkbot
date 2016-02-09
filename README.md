@@ -1,5 +1,7 @@
 ## Chatbot for VKontakte (vk.com)
 
+> :exclamation: Since 2/9/16 updates became private.
+
 Live example: [vk.com/chatsbot](http://vk.com/chatsbot)
 
 ##### Features
